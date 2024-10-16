@@ -17,18 +17,18 @@ add_action('init', 'bagiin_jetform_addon_delete_media');
 function bagiin_jetform_addon_delete_media()
 {
     $post = $_POST;
-    if (isset($post['_post_id'])) {
+    if (isset($post['post_id']) && isset($post['_jet_engine_booking_form_id'])) {
         $stored_gallery_ids = array_map(function ($gallery) {
             return $gallery['id'];
-        }, get_post_meta($post['_post_id'], '_gallery', true));
+        }, get_post_meta($post['post_id'], '_photo_gallery', true));
         $stored_gallery_ids = array_values($stored_gallery_ids);
 
-        if (isset($post['_upload_image'])) {
+        if (isset($post['_photo_gallery'])) {
             $submitted_images_ids = array_map(function ($gallery) {
                 $gallery = stripslashes($gallery);
                 $gallery = json_decode($gallery);
                 return $gallery->id;
-            }, $post['_upload_image']);
+            }, $post['_photo_gallery']);
         } else $submitted_images_ids = [];
 
         $to_delete = [];
